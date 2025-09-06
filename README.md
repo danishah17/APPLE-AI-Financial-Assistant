@@ -23,14 +23,23 @@ all orchestrated in **n8n**.
 ##  Repository Structure
 
 /workflows
+
 ├── APPLE AI-Agent Chat.json
+
 └── APPLE AI-Agent Vector database flow.json
+
 /data
+
 └── FY23_Q4_Consolidated_Financial_Statements.pdf
+
 /docs
+
 ├── chat-screenshot.png
+
 ├── agent-graph.png
+
 └── ingestion-graph.png
+
 README.md
 LICENSE
 
@@ -98,4 +107,4 @@ The bundled PDF includes Apple’s FY23 Q4 results (e.g., **Total net sales $89,
 MIT (or your preferred license)
 
 
-#n8n #OpenAI #Pinecone #RAG #LLM #OneDrive #AIagents #FinanceTech
+## #n8n #OpenAI #Pinecone #RAG #LLM #OneDrive #AIagents #FinanceTech
