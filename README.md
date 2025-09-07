@@ -4,19 +4,19 @@ An end-to-end **AI chat assistant** that answers Apple-related finance questions
 OpenAI for reasoning, **Pinecone** for vector search, and **OneDrive** as a document source—
 all orchestrated in **n8n**.
 
-- **Chat workflow**: public chat, AI Agent, OpenAI chat model, short-term memory, and Pinecone retrieval as a tool. :contentReference[oaicite:0]{index=0}
-- **Ingestion workflow**: OneDrive **Search → Download**, chunk/encode, and upsert to Pinecone (namespace `apple-data`). :contentReference[oaicite:1]{index=1}
-- **Sample data**: Apple FY23 Q4 Consolidated Financial Statements (PDF) for grounding. :contentReference[oaicite:2]{index=2}
+- **Chat workflow**: public chat, AI Agent, OpenAI chat model, short-term memory, and Pinecone retrieval as a tool. 
+- **Ingestion workflow**: OneDrive **Search → Download**, chunk/encode, and upsert to Pinecone (namespace `apple-data`). 
+- **Sample data**: Apple FY23 Q4 Consolidated Financial Statements (PDF) for grounding. :contentReference
 
 ---
 
 ##  Features
 
-- **Chat UI Trigger**: public chat endpoint preloaded with a friendly system greeting. :contentReference[oaicite:3]{index=3}  
-- **AI Agent with Tools**: uses Pinecone as a retrieval tool (namespace `apple-data`) to ground answers. :contentReference[oaicite:4]{index=4}  
+- **Chat UI Trigger**: public chat endpoint preloaded with a friendly system greeting.  
+- **AI Agent with Tools**: uses Pinecone as a retrieval tool (namespace `apple-data`) to ground answers. 
 - **OpenAI Models**: GPT-4o-mini for chat; OpenAI embeddings for indexing & search.   
 - **Vector Store**: Pinecone index `ai-agent2-d1536`, namespace `apple-data`.   
-- **OneDrive Pipeline**: robust **Search → Download** pattern using the returned `id` (no manual URL parsing). :contentReference[oaicite:7]{index=7}
+- **OneDrive Pipeline**: robust **Search → Download** pattern using the returned `id` (no manual URL parsing). 
 
 ---
 
@@ -40,39 +40,31 @@ all orchestrated in **n8n**.
 
 └── ingestion-graph.png
 
-README.md
-LICENSE
-
-markdown
-Copy code
-
-> Replace the images with your screenshots (the chat view and both workflow graphs).
-
 ---
 
 ##  Quick Start
 
 1. **Import workflows**
    - In n8n, **Import**:
-     - `workflows/APPLE AI-Agent Chat.json` (chat agent) :contentReference[oaicite:8]{index=8}
-     - `workflows/APPLE AI-Agent Vector database flow.json` (ingestion) :contentReference[oaicite:9]{index=9}
+     - `workflows/APPLE AI-Agent Chat.json` (chat agent) 
+     - `workflows/APPLE AI-Agent Vector database flow.json` (ingestion) 
 
 2. **Configure credentials**
    - **OpenAI API** (chat + embeddings)   
    - **Pinecone** (index: `ai-agent2-d1536`, namespace: `apple-data`)   
-   - **Microsoft OneDrive OAuth2** (read access to your documents) :contentReference[oaicite:12]{index=12}
+   - **Microsoft OneDrive OAuth2** (read access to your documents) 
 
 3. **Load documents (ingestion workflow)**
    - Open **“APPLE AI-Agent Vector database flow”**.
    - Node **Search a file**: query your PDF name (e.g., `FY23_Q4_Consolidated_Financial_Statements.pdf`).  
-   - Node **Download a file**: `File ID = {{ $json.id }}` (wired from Search). :contentReference[oaicite:13]{index=13}
-   - Run the workflow to upsert chunks/embeddings into Pinecone. :contentReference[oaicite:14]{index=14}
+   - Node **Download a file**: `File ID = {{ $json.id }}` (wired from Search).
+   - Run the workflow to upsert chunks/embeddings into Pinecone. 
 
 4. **Start chatting (chat workflow)**
    - Open **“APPLE AI-Agent Chat”**, click **Open chat**, ask questions like:
      - “Summarize Apple’s FY23 Q4 net sales and margins.”
      - “How did Services perform year-over-year?”  
-   - Answers are grounded in your indexed PDF. :contentReference[oaicite:15]{index=15}
+   - Answers are grounded in your indexed PDF. 
 
 ---
 
@@ -80,23 +72,23 @@ Copy code
 
 **Chat path**  
 `Chat Trigger → AI Agent → OpenAI Chat Model + Memory → (Tool) Pinecone Vector Store`  
-When a question arrives, the agent retrieves relevant chunks from Pinecone and composes a concise answer. :contentReference[oaicite:16]{index=16}
+When a question arrives, the agent retrieves relevant chunks from Pinecone and composes a concise answer. 
 
 **Ingestion path**  
 `Manual Trigger → OneDrive Search → OneDrive Download → Pinecone Vector Store (insert) → OpenAI Embeddings → Default Data Loader`  
-This pipeline searches OneDrive, downloads the PDF using the **driveItem id**, chunks/embeds, and upserts to Pinecone (namespace `apple-data`). :contentReference[oaicite:17]{index=17}
+This pipeline searches OneDrive, downloads the PDF using the **driveItem id**, chunks/embeds, and upserts to Pinecone (namespace `apple-data`). 
 
 ---
 
 ##  Example Grounding Data (Apple FY23 Q4)
 
-The bundled PDF includes Apple’s FY23 Q4 results (e.g., **Total net sales $89,498M** for the quarter), balance sheet, and cash flows—perfect for Q&A and summaries. :contentReference[oaicite:18]{index=18}
+The bundled PDF includes Apple’s FY23 Q4 results (e.g., **Total net sales $89,498M** for the quarter), balance sheet, and cash flows—perfect for Q&A and summaries. 
 
 ---
 
 ##  Notes & Tips
 
-- Prefer **Search → Download** in OneDrive; don’t paste web URLs with `/personal/...`—use the returned `id`. :contentReference[oaicite:19]{index=19}  
+- Prefer **Search → Download** in OneDrive; don’t paste web URLs with `/personal/...`—use the returned `id`. 
 - Keep your Pinecone namespace consistent (`apple-data`) across ingestion and chat.   
 - You can add more PDFs (10-Ks, press releases) and re-run the ingestion workflow to expand knowledge.
 
